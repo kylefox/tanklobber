@@ -36,22 +36,21 @@ var _global = this;
 	TankLobber.prototype.mainLoop = function() {
 		var self = this;
 		closure = function(){
-			_redraw.apply(self);
+      self.tick();
 		};
 		this._interval = _global.window.setInterval(closure, Math.ceil(1000 / self._fps));
 	};
 
 	// Clears the contents of the game.
 	TankLobber.prototype.clear = function() {
-		this._context.clearRect(0, 0, 800, 533);
+		this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 	};
 
-	// PRIVATE
-
-	function _redraw() {
+  
+	TankLobber.prototype.tick = function() {
 		this.clear();
 		this.tank1.draw(this._context);
 		// this.stop();
-    };
+  };
     
 })();

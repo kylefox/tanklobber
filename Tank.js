@@ -49,6 +49,7 @@ function deg2rad(degrees) {
 	};
     
 	Tank.prototype.draw = function(ctx) {
+    ctx.beginPath();
 		ctx.arc(this.x, this.y, this.size, Math.PI, Math.PI * 2, false);
 		ctx.closePath();
 		ctx.fill();
@@ -64,9 +65,9 @@ function deg2rad(degrees) {
 		// Adjacent size:
 		var adj = Math.cos(this.angle) * (this.size*2);
 		
-		ctx.lineTo(this.x + opp, this.y - adj);
-		ctx.closePath();
-		ctx.stroke();
+    ctx.lineTo(this.x + opp, this.y - adj);
+    ctx.closePath();
+    ctx.stroke();
 	};
     
 
