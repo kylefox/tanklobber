@@ -17,11 +17,21 @@ function deg2rad(degrees) {
 	MAX_LEFT = 0;
 	MAX_RIGHT = 90;
 
-    function Tank(x, y) {
+    function Tank(x, y, size, direction) {
+
 		this.x = x;
 		this.y = y;
-		this.size = 15;
-		this.setAngle(45);
+		this.size = size;
+		this.direction = direction;
+		if(this.direction == "east") {
+			this.maxLeft = 0;
+			this.maxRight = 90;
+			this.setAngle(45);
+		} else {
+			this.maxLeft = 270;
+			this.maxRight = 360;
+			this.setAngle(360 - 45);
+		}
 		this.rotationSpeed = 5;
 		this.move = null;
 		
@@ -39,8 +49,8 @@ function deg2rad(degrees) {
     _global.Tank = Tank;
 
 	Tank.prototype.setAngle = function(degrees) {
-		if(degrees > MAX_RIGHT) degrees = MAX_RIGHT;
-		if(degrees < MAX_LEFT) degrees = MAX_LEFT;
+		if(degrees > this.maxRight) degrees = this.maxRight;
+		if(degrees < this.maxLeft) degrees = this.maxLeft;	
 		this.angle = deg2rad(degrees);
 	};
 	

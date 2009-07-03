@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<canvas id="canvas" width="300" height="300"></canvas>
+<canvas id="canvas" width="800" height="600"></canvas>
 <button id="stop">Stop</button>
 
 <script type="text/javascript" charset="utf-8">
@@ -26,21 +26,6 @@
     
     var game = new TankLobber(canvas, 30);
     game.start();
-    
-    var tank = game.tank1;
-    
-    // $(document).keydown = function(event) {
-    //  if(event.keyCode == LEFT || event.keyCode == RIGHT) {
-    //    if(event.keyCode == RIGHT) {
-    //      tank.setAngle(tank.getAngle() + tank.rotationSpeed);
-    //    }
-    //    if(event.keyCode == LEFT) {
-    //      tank.setAngle(tank.getAngle() - tank.rotationSpeed);
-    //    }
-    //    event.preventDefault();
-    //  }
-    // };
-
     
     $("#stop").click(function(){
       game.stop();

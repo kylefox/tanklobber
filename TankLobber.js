@@ -29,15 +29,15 @@ var _global = this;
 
 	// Sets up the objects for a new round.
 	TankLobber.prototype.setupRound = function() {
-		this.tank1 = new Tank(50, 50);
+		var tankSize = 8;
+		this.tank1 = new Tank(tankSize*2, this._canvas.height-tankSize, tankSize, "east");
+		this.tank2 = new Tank(this._canvas.width - tankSize*2, this._canvas.height-tankSize, tankSize, "west");
 	};
 	
 	// Starts the main drawing cycle.
 	TankLobber.prototype.mainLoop = function() {
 		var self = this;
-		closure = function(){
-      self.tick();
-		};
+		closure = function(){ self.tick(); };
 		this._interval = _global.window.setInterval(closure, Math.ceil(1000 / self._fps));
 	};
 
@@ -50,6 +50,7 @@ var _global = this;
 	TankLobber.prototype.tick = function() {
 		this.clear();
 		this.tank1.draw(this._context);
+		this.tank2.draw(this._context);
 		// this.stop();
   };
     
