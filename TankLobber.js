@@ -1,16 +1,25 @@
-var _global = this;
+var Tank, window, Math; // For http://www.jslint.com/
+
+var TankLobber = {
+	Directions: {
+		LEFT: 37,
+		RIGHT: 39
+	},
+	Utils: {
+		rad2deg: function(radians) { return radians * 180 / Math.PI; },
+		deg2rad: function(degrees) { return degrees * Math.PI / 180; }
+	}
+};
 
 (function () {
     
-	// PUBLIC
-
-    function TankLobber(canvas, fps) {
+    function Game(canvas, fps) {
         this.init(canvas, fps);
     }
     
-    _global.TankLobber = TankLobber;
+    TankLobber.Game = Game;
     
-    TankLobber.prototype.init = function(canvas, fps) {
+    Game.prototype.init = function(canvas, fps) {
         this._canvas = canvas;
         this._context = this._canvas.getContext("2d");
         this._width = this._canvas.width;
@@ -18,40 +27,38 @@ var _global = this;
 		this._fps = fps;
     };
     
-	TankLobber.prototype.start = function() {
+	Game.prototype.start = function() {
 		this.setupRound();
 		this.mainLoop();
 	};
 
-	TankLobber.prototype.stop = function() {
-		_global.window.clearInterval(this._interval);
-	}
+	Game.prototype.stop = function() {
+		window.clearInterval(this._interval);
+	};
 
 	// Sets up the objects for a new round.
-	TankLobber.prototype.setupRound = function() {
+	Game.prototype.setupRound = function() {
 		var tankSize = 8;
-		this.tank1 = new Tank(tankSize*2, this._canvas.height-tankSize, tankSize, "east");
-		this.tank2 = new Tank(this._canvas.width - tankSize*2, this._canvas.height-tankSize, tankSize, "west");
+		this.tank1 = new TankLobber.Tank(tankSize*2, this._canvas.height-tankSize, tankSize, TankLobber.Directions.RIGHT);
+		this.tank2 = new TankLobber.Tank(this._canvas.width - tankSize*2, this._canvas.height-tankSize, tankSize, TankLobber.Directions.LEFT);
 	};
 	
 	// Starts the main drawing cycle.
-	TankLobber.prototype.mainLoop = function() {
+	Game.prototype.mainLoop = function() {
 		var self = this;
-		closure = function(){ self.tick(); };
-		this._interval = _global.window.setInterval(closure, Math.ceil(1000 / self._fps));
+		var ticker = function(){ self.tick(); };
+		this._interval = window.setInterval(ticker, Math.ceil(1000 / self._fps));
 	};
 
 	// Clears the contents of the game.
-	TankLobber.prototype.clear = function() {
+	Game.prototype.clear = function() {
 		this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 	};
 
-  
-	TankLobber.prototype.tick = function() {
+	Game.prototype.tick = function() {
 		this.clear();
 		this.tank1.draw(this._context);
 		this.tank2.draw(this._context);
-		// this.stop();
-  };
+  	};
     
 })();

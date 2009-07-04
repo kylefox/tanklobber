@@ -1,29 +1,14 @@
-var _global = this;
-
-function rad2deg(radians) {
-	return radians * 180 / Math.PI;
-}
-
-function deg2rad(degrees) {
-	return degrees * Math.PI / 180;
-}
+/*global TankLobber, window*/
+if(TankLobber === undefined) { throw("TankLobber is not loaded."); }
 
 (function () {
     
-	// PUBLIC
-	LEFT = 37;
-	RIGHT = 39;
-	
-	MAX_LEFT = 0;
-	MAX_RIGHT = 90;
-
     function Tank(x, y, size, direction) {
-
 		this.x = x;
 		this.y = y;
 		this.size = size;
 		this.direction = direction;
-		if(this.direction == "east") {
+		if(this.direction == TankLobber.Directions.RIGHT) {
 			this.maxLeft = 0;
 			this.maxRight = 90;
 			this.setAngle(45);
@@ -44,41 +29,33 @@ function deg2rad(degrees) {
 			tank.move = null;
 		};
 		
-    };
+    }
     
-    _global.Tank = Tank;
+    TankLobber.Tank = Tank;
 
 	Tank.prototype.setAngle = function(degrees) {
-		if(degrees > this.maxRight) degrees = this.maxRight;
-		if(degrees < this.maxLeft) degrees = this.maxLeft;	
-		this.angle = deg2rad(degrees);
+		if(degrees > this.maxRight) { degrees = this.maxRight; }
+		if(degrees < this.maxLeft) { degrees = this.maxLeft; }
+		this.angle = TankLobber.Utils.deg2rad(degrees);
 	};
 	
 	Tank.prototype.getAngle = function() {
-		return rad2deg(this.angle);
+		return TankLobber.Utils.rad2deg(this.angle);
 	};
     
 	Tank.prototype.draw = function(ctx) {
-    ctx.beginPath();
+		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.size, Math.PI, Math.PI * 2, false);
 		ctx.closePath();
 		ctx.fill();
-		
 		ctx.moveTo(this.x, this.y);
-		
-		if(this.move == RIGHT) this.setAngle(this.getAngle() + 5);
-		if(this.move == LEFT) this.setAngle(this.getAngle() - 5);
-		
-		// opposize side size:
+		if(this.move == TankLobber.Directions.RIGHT) { this.setAngle(this.getAngle() + 5); }
+		if(this.move == TankLobber.Directions.LEFT) { this.setAngle(this.getAngle() - 5); }
 		var opp = Math.sin(this.angle) * (this.size*2);
-		
-		// Adjacent size:
 		var adj = Math.cos(this.angle) * (this.size*2);
-		
-    ctx.lineTo(this.x + opp, this.y - adj);
-    ctx.closePath();
-    ctx.stroke();
+		ctx.lineTo(this.x + opp, this.y - adj);
+		ctx.closePath();
+		ctx.stroke();
 	};
-    
 
 })();
