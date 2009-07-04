@@ -1,4 +1,4 @@
-var Tank, window, Math; // For http://www.jslint.com/
+/*global Tank, window, Math*/
 
 var TankLobber = {
 	Directions: {
@@ -7,7 +7,10 @@ var TankLobber = {
 	},
 	Utils: {
 		rad2deg: function(radians) { return radians * 180 / Math.PI; },
-		deg2rad: function(degrees) { return degrees * Math.PI / 180; }
+		deg2rad: function(degrees) { return degrees * Math.PI / 180; },
+		interpolate: function(x, pA, pB) {
+			return pA.y  + ((x - pA.x) * (pB.y - pA.y)/(pB.x - pA.x));
+		}
 	}
 };
 
@@ -39,8 +42,11 @@ var TankLobber = {
 	// Sets up the objects for a new round.
 	Game.prototype.setupRound = function() {
 		var tankSize = 8;
-		this.tank1 = new TankLobber.Tank(tankSize*2, this._canvas.height-tankSize, tankSize, TankLobber.Directions.RIGHT);
-		this.tank2 = new TankLobber.Tank(this._canvas.width - tankSize*2, this._canvas.height-tankSize, tankSize, TankLobber.Directions.LEFT);
+		this.terrain = new TankLobber.Terrain(this._width, this._height);
+		this.tank1 = new TankLobber.Tank(tankSize*2, this._height-tankSize, tankSize, TankLobber.Directions.RIGHT);
+		this.tank2 = new TankLobber.Tank(this._width - tankSize*2, this._height-tankSize, tankSize, TankLobber.Directions.LEFT);
+		this.terrain.placeTank(this.tank1, 50);
+		this.terrain.placeTank(this.tank2, this._width - 50);
 	};
 	
 	// Starts the main drawing cycle.
@@ -59,6 +65,8 @@ var TankLobber = {
 		this.clear();
 		this.tank1.draw(this._context);
 		this.tank2.draw(this._context);
+		this.terrain.draw(this._context);
+		// this.stop();
   	};
     
 })();

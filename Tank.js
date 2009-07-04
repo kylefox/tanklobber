@@ -11,11 +11,11 @@ if(TankLobber === undefined) { throw("TankLobber is not loaded."); }
 		if(this.direction == TankLobber.Directions.RIGHT) {
 			this.maxLeft = 0;
 			this.maxRight = 90;
-			this.setAngle(45);
+			this.setAngle(15);
 		} else {
 			this.maxLeft = 270;
 			this.maxRight = 360;
-			this.setAngle(360 - 45);
+			this.setAngle(360 - 15);
 		}
 		this.rotationSpeed = 5;
 		this.move = null;
@@ -44,15 +44,18 @@ if(TankLobber === undefined) { throw("TankLobber is not loaded."); }
 	};
     
 	Tank.prototype.draw = function(ctx) {
+		// Draw body
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.size, Math.PI, Math.PI * 2, false);
 		ctx.closePath();
 		ctx.fill();
-		ctx.moveTo(this.x, this.y);
+		// Draw gun
 		if(this.move == TankLobber.Directions.RIGHT) { this.setAngle(this.getAngle() + 5); }
 		if(this.move == TankLobber.Directions.LEFT) { this.setAngle(this.getAngle() - 5); }
 		var opp = Math.sin(this.angle) * (this.size*2);
 		var adj = Math.cos(this.angle) * (this.size*2);
+		ctx.beginPath();  // Need this?
+		ctx.moveTo(this.x, this.y);
 		ctx.lineTo(this.x + opp, this.y - adj);
 		ctx.closePath();
 		ctx.stroke();
